@@ -115,7 +115,7 @@ int main() {
            
         
         _CP0_SET_COUNT(0);
-        while (_CP0_GET_COUNT() < 5859 / 2){
+        while (_CP0_GET_COUNT() < 5200 / 2){
             ;//1hz
         }
         
