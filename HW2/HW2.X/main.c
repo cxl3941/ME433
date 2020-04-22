@@ -71,7 +71,7 @@ int main() {
     unsigned int i = 0;
     unsigned int vtri = 0;
     unsigned int vsin = 0;
-    unsigned int val;
+    float val;
    
    
     
@@ -92,9 +92,9 @@ int main() {
       
         }
         
-        val = (i/4096) * 2 * M_PI;
+        val = (float) i * 2 * 3.14159 / 4096;
        
-        vsin = (short) 4096 * sin(val);
+        vsin = ((float) 2048 * (double) sin(val)) + 2048;
         
            s = (0b1111 <<12);
            s = s | vsin; // I'm not able to get this bit working: is it a typecast problem? 
@@ -104,6 +104,8 @@ int main() {
             LATAbits.LATA0 = 0;
             spi_io(p >> 8);
             spi_io(p);
+            LATAbits.LATA0 = 1;
+            LATAbits.LATA0 = 0;
             spi_io(s >> 8);
             spi_io(s);
             LATAbits.LATA0 = 1;
