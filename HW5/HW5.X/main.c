@@ -5,6 +5,7 @@
 #include "font.h"
 #include "ssd1306.h"
 #include <math.h>
+#include "ws2812b.h"
 
 
 // DEVCFG0
@@ -67,6 +68,7 @@ int main() {
     
     i2c_master_setup();
     ssd1306_setup();
+    ws2812b_setup();
    
    
 
@@ -75,77 +77,40 @@ int main() {
     __builtin_enable_interrupts();
     
     
-    
-    unsigned char wAdd,value,regist, rAdd;
-    
-    
-    
-    
-    wAdd = 0b01000000; 
-    rAdd = 0b01000001;
-    regist = 0x00;
-    value = 0x00;
-    
-    setPin (wAdd,regist, value); //initialise A as output 
+  
    
-    regist = 0x10;
-    value = 0xFF;
    
-    setPin (wAdd,regist, value); //initialise B as input
-    
-    regist = 0x0A;
-    value = 0xFF;
-    
-    setPin (wAdd,regist, value);
-    
-    char message[50];
-    char frames[50];
-    
-    int i = 3941;
-    
+   float i=0;
+   float j=60;
+   float k=120;
    
     
     
     while (1) {
-         _CP0_SET_COUNT(0);
-         
-         sprintf(message, "my netID = cxl%d", i); 
-    
-    printString(1,1,message);
-    printString(30,24,frames);
-    ssd1306_update();
-    
-    float FPS = (float) 12000000/_CP0_GET_COUNT() ;
-    
-    sprintf(frames, "FPS = %f", FPS); 
-    
+            
+        wsColor nice;
+        
+        
+       
    
-    ssd1306_update();
-    
-   
-         
-        while (_CP0_GET_COUNT() < 24000000 / 2){
-        LATAbits.LATA4 = 0;
-        setPin(wAdd,0x0A, 0x00);
-        
-        
-        }
-        while (_CP0_GET_COUNT() >= 24000000 / 2 && _CP0_GET_COUNT() < 48000000 / 2){
-        LATAbits.LATA4 = 1;
-        setPin(wAdd,0x0A, 0xFF);
-        
-        
-        }
-        
-        
+      nice = HSBtoRGB(i, 1, .03);
     
     
+        
+ws2812b_setColor(&nice, 4);
+
+    
+         if (i < 360) {
+          i = i + .1;
+      }  else if (i >= 360){
+          i = 0;
+      }
+
   
-       
-        
+
+      
          
        
-     
         
         }
         
@@ -175,50 +140,3 @@ unsigned char readPin (unsigned char address, unsigned char regist){
     return I2C1RCV;
 }
 
-void drawLetter (unsigned char x, unsigned char y, unsigned char letter) {
-    int j, k;
-
- 
-    
-    for (k = 0; k <=7; k++) {
-    
-    for (j = 0; j <=7; j++) {
-   
-        if (((ASCII[letter - 0x20][j])>> k ) & 1) {
-            ssd1306_drawPixel ((x + j), (y + k), 1);
-            
-        } else 
-            ssd1306_drawPixel ((x + j), (y + k), 0);
-    
-    }
-    
-    
-    }
-    
-}
-
-
-void printString (unsigned char x, unsigned char y, char *message) {
-    
- int s = 0;
- 
- 
- while (message[s] != 0) {
-     if (s <= 25) {
-     drawLetter ((s*5) + x, 0 + y, message[s]);
- }
-     else if (s > 25 && s <= 50) {
-     drawLetter (((s-25)*5) + x, 8 + y, message[s]);
- }
-     else if (s > 50 && s <= 75) {
-     drawLetter (((s-50)*5) + x, 16 + y, message[s]);
- }
-     else if (s > 75 && s <= 100) {
-     drawLetter (((s-75)*5) + x, 24 + y, message[s]);
- }
-     s++;
-    
-}
- 
- 
-}
