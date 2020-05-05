@@ -4,8 +4,8 @@
 // other includes if necessary for debugging
 
 // Timer2 delay times, you can tune these if necessary
-#define LOWTIME 15 // 15number of 48MHz cycles to be low for 0.35uS
-#define HIGHTIME 65 // 65number of 48MHz cycles to be high for 1.65uS
+#define LOWTIME 14// 15number of 48MHz cycles to be low for 0.35uS
+#define HIGHTIME 70  // 65number of 48MHz cycles to be high for 1.65uS
 
 // setup Timer2 for 48MHz, and setup the output pin
 void ws2812b_setup() {
