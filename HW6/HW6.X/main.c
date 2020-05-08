@@ -115,7 +115,7 @@ int main() {
     while (1) {
       
        
-     _CP0_SET_COUNT(0);
+     _CP0_SET_COUNT(0);     //for blinking
                 while (_CP0_GET_COUNT() < 2400000 / 2){
 
             setPin(wAdd,0x0A, 0x00);
@@ -127,7 +127,7 @@ int main() {
                 }
          
        
-     I2C_read_multiple(0b1101011, 0x20, output, 14);
+     I2C_read_multiple(0b1101011, 0x20, output, 14); //reading of inputs, and also saving done here
      
     signed short temp = (int)((output[1]) << 8) | output[0];
     signed short xG = (int)((output[3]) << 8) | output[2];
@@ -141,7 +141,7 @@ int main() {
      
     /*
     
-    sprintf(message, "temp: %d", temp); 
+    sprintf(message, "temp: %d", temp);             //this part used to print to screen the values necessary 
                 printString(1,1,message);
     sprintf(message, "g: %d %d %d", xG, yG, zG); 
                 printString(1,10,message);

@@ -80,44 +80,66 @@ int main() {
   
    
    
-   float i=0;
-   float j=60;
-   float k=120;
+ 
    
-    
+   int i = 0;
     
     while (1) {
             
-        wsColor nice;
+         wsColor c[4];
+        int b, a, d;
         
+        b = i + 120;
+        a = i + 240;
+        d = i + 70;
+        
+       if (i>360) {
+            i = 0;
+            
+        }
+        if (b>360) {
+            b = b - 360;
+            
+        }
+        if (a>360) {
+            a = a - 360;
+            
+        }
+        if (d>360) {
+            d = d - 360;
+            
+        }
         
        
-   
-      nice = HSBtoRGB(i, 1, .03);
-    
-    
         
-ws2812b_setColor(&nice, 4);
-
-    
-         if (i < 360) {
-          i = i + .1;
-      }  else if (i >= 360){
-          i = 0;
-      }
-
-  
-
-      
-         
-       
+        
+        
+        
+        _CP0_SET_COUNT(0);
+        while (_CP0_GET_COUNT()< 48000)
+        {
+        //initial state of LED
+        c[0] = HSBtoRGB(i,1,0.05); 
+        c[1] = HSBtoRGB(b,1,0.05);
+        c[2] = HSBtoRGB(a,1,0.05);
+        c[3] = HSBtoRGB(d,1,0.05);
+        wsColor *pointer;
+        pointer=&c;
+        ws2812b_setColor(pointer,4);
+        }
+        
+        
+        
+        
+        i++;
+        
+        
         
         }
         
     
     
 }
-
 
 void setPin (unsigned char address, unsigned char regist, unsigned char value) {
     i2c_master_start();
